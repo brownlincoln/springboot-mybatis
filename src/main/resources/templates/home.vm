@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+## This is the velocity template
+
+#* This is
+a mulitple comment
+*#
+$!{value1}
+#set($hello = "hello")
+#set($helloworld = $!{hello} + "world")
+
+$hello
+$helloworld
+</body>
+</html>
