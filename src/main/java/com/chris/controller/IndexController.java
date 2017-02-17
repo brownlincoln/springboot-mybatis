@@ -1,4 +1,4 @@
-package com.chris;
+package com.chris.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
