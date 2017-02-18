@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class MyLogger {
     Logger log = LoggerFactory.getLogger(MyLogger.class);
 
-    @Before("execution(* com.chris.IndexController.*(..))")
+    @Before("execution(* com.chris.service.*.*(..))")
     public void beforeMethod(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         StringBuilder sb = new StringBuilder();

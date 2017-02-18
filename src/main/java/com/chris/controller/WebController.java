@@ -13,10 +13,10 @@ import javax.servlet.http.HttpSession;
 import java.util.Enumeration;
 
 /**
- * Created by YaoQi on 2017/2/16.
+ * Created by YaoQi on 2017/2/18.
  */
 @Controller
-public class IndexController {
+public class WebController {
 
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET})
     @ResponseBody
@@ -93,6 +93,3 @@ public class IndexController {
         return "error: " + e.getMessage();
     }
 }
-
-
-

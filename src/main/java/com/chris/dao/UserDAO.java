@@ -1,13 +1,13 @@
 package com.chris.dao;
 
 import com.chris.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 /**
  * Created by LJFENG on 2017/2/17 0017.
  */
-
+@Repository
 @Mapper
 public interface UserDAO {
     String TABLE_NAME = " user ";
@@ -18,5 +18,12 @@ public interface UserDAO {
             "(#{name}, #{password}, #{salt}, #{headUrl})"})
     public int addUser(User user);
 
+    @Select({"select ", SELECT_FIELD, "from ", TABLE_NAME, " where id = #{id}"})
+    User selectById(int id);
 
+    @Update({"update ", TABLE_NAME, "set password=#{password} where id = #{id}"})
+    void updatePassword(User user);
+
+    @Delete({"delete from ", TABLE_NAME, " where id = #{id}"})
+    void deleteUser(int id);
 }

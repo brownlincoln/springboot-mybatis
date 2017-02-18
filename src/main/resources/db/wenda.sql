@@ -27,3 +27,15 @@ password VARCHAR(50) not null,
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+CREATE TABLE question (
+  id int PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(3000) not null,
+  content TEXT not null,
+  createdDate DATE not null,
+  userId int not null,
+  commentCount int DEFAULT 0
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;

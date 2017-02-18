@@ -31,9 +31,17 @@ public class InitDatabaseTests {
             user.setSalt("salt" + i);
             user.setHeadUrl("www.img.nowcoder.com/" + rand.nextInt(1000));
             userDAO.addUser(user);
+
+            user.setPassword("xxx");
+            userDAO.updatePassword(user);
         }
 
+        User user = userDAO.selectById(1);
+        System.out.println(user);
 
+        userDAO.deleteUser(2);
     }
+
+
 
 }
