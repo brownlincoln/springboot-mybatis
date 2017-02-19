@@ -25,8 +25,8 @@ public interface QuestionDAO {
             "#{title}, #{content}, #{createdDate}, #{userId}, #{commentCount})"})
     int addQuestion(Question question);
 
-    @Select({"select", SELECT_FIELD, " from ", TABLE_NAME, " where userId = #{userId}," +
-            "offset = #{offset}, limit = #{limit}" })
+    @Select({"select", SELECT_FIELD, " from ", TABLE_NAME, " where userId = #{userId} " +
+            "limit #{offset}, #{limit}" })
     List<Question> selectLatestQuestions(
             @Param("userId") int userId,
             @Param("offset") int offset,

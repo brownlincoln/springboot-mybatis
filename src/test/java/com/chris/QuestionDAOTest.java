@@ -36,7 +36,7 @@ public class QuestionDAOTest {
             user.setName("user" + i);
             user.setPassword("password" + i);
             user.setSalt("salt" + i);
-            user.setHeadUrl("www.img.nowcoder.com/" + rand.nextInt(1000));
+            user.setHeadUrl(String.format("www.images.nowcoder.com/head/%dt.png", rand.nextInt(1000)));
 
             userDAO.addUser(user);
            // System.out.println(user.getId());
@@ -44,13 +44,14 @@ public class QuestionDAOTest {
             String content = "content" + i;
             Date date = new Date();
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            date.setTime(date.getTime() + 1000 * 3600 * i);
+            date.setTime(date.getTime() + 1000 * 3600 * 6 * i);
             String sqlDate = formatter.format(date);
-            int userId = i;
+            int userId = rand.nextInt(3) + 1;
             int commentCount = rand.nextInt(30);
             Question question = new Question(title, content, sqlDate, userId, commentCount);
             questionDAO.addQuestion(question);
 
         }
+
     }
 }

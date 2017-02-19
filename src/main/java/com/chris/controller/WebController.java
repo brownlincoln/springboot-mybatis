@@ -15,7 +15,7 @@ import java.util.Enumeration;
 /**
  * Created by YaoQi on 2017/2/18.
  */
-@Controller
+//@Controller
 public class WebController {
 
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET})
