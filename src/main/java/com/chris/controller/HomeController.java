@@ -1,6 +1,5 @@
 package com.chris.controller;
 
-import com.chris.aspect.MyLogger;
 import com.chris.model.Question;
 import com.chris.model.User;
 import com.chris.model.ViewObject;

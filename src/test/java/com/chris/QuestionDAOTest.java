@@ -41,7 +41,9 @@ public class QuestionDAOTest {
             userDAO.addUser(user);
            // System.out.println(user.getId());
             String title = "title" + i;
-            String content = "content" + i;
+            String content = "StringUtils.isBlank() checks that each character of the string is a whitespace " +
+                    "character (or that the string is empty or that it's null). This is totally different than just" +
+                    " checking if the string is empty.";
             Date date = new Date();
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             date.setTime(date.getTime() + 1000 * 3600 * 6 * i);

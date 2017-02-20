@@ -16,11 +16,11 @@ public interface LoginTicketDAO {
 
     @Insert({"insert into ", TABLE_NAME, "(", INSERT_FIELD, ") values " +
             "( #{userId},  #{ticket}, #{expired}, #{status})"})
-    public int addTicket(@Param("ticket") LoginTicket loginTicket);
+    public int addTicket(LoginTicket loginTicket);
 
     @Select({"select ", SELECT_FIELD, "from ", TABLE_NAME, "where ticket=#{ticket}"})
     public LoginTicket selectByTicket(String ticket);
 
     @Update({"update ", TABLE_NAME, "set status=#{status} where ticket=#{ticket}"})
-    public void updateStatus(String ticket, int status);
+    public void updateStatus(@Param("ticket") String ticket, @Param("status") int status);
 }

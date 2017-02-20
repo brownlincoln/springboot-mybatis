@@ -30,6 +30,12 @@ public class UserService {
         return user;
     }
 
+    //Get user by name
+    public User getUser(String username) {
+        User user = userDAO.selectByName(username);
+        return user;
+    }
+
     public Map<String, Object> register(String username, String password) {
         Map<String, Object> map = new HashMap<>();
         if(StringUtils.isBlank(username)) {
@@ -55,6 +61,10 @@ public class UserService {
 
         userDAO.addUser(user);
 
+        //登录
+        String ticket = addLoginTicket(getUser(username).getId());
+        //String ticket = addLoginTicket(user.getId());
+        map.put("ticket", ticket);
         return map;
     }
 
@@ -75,11 +85,16 @@ public class UserService {
             map.put("msg", "用户名或者密码不正确！");
             return map;
         }
-
-        String ticket = addLoginTicket(user.getId());
+        //Each time login, store a temp ticket(token) for this session, which will expire soon
+        int userId = getUser(username).getId();
+        String ticket = addLoginTicket(userId);
         map.put("ticket", ticket);
-        map.put("userId", user.getId());
+        map.put("userId", userId);
         return map;
+    }
+
+    public void logout(String ticket) {
+        loginTicketDAO.updateStatus(ticket, 1);
     }
 
     //Add token
@@ -91,9 +106,9 @@ public class UserService {
         Date date = new Date();
         //Cookie valid for 100 days
         date.setTime(3600*24*100 + date.getTime());
-        DateFormat formatter = new SimpleDateFormat();
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM--dd HH:mm:ss");
         ticket.setExpired(formatter.format(date));
-
+        loginTicketDAO.addTicket(ticket);
         return ticket.getTicket();
 
     }

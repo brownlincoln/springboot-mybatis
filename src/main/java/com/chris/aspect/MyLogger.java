@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by YaoQi on 2017/2/16.
  */
-@Aspect
+/*@Aspect
 @Component
 public class MyLogger {
     Logger log = LoggerFactory.getLogger(MyLogger.class);
@@ -24,4 +24,4 @@ public class MyLogger {
         }
         log.info("before method" + sb.toString());
     }
-}
+}*/
