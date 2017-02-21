@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -32,7 +33,7 @@ public class HomeController {
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET})
     public String index(Model model) {
 
-        List<Question> questionList = questionService.getLatestQuestions(1, 0, 5);
+        List<Question> questionList = questionService.getLatestQuestions(0, 0, 5);
 //        System.out.println(user);
 //        System.out.println(questionList.size());
 
@@ -46,4 +47,7 @@ public class HomeController {
         model.addAttribute("vos", vos);
         return "index";
     }
+
+
+
 }
