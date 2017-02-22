@@ -2,10 +2,7 @@ package com.chris.dao;
 
 import com.chris.model.Question;
 import javafx.scene.control.Tab;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -31,4 +28,10 @@ public interface QuestionDAO {
             @Param("offset") int offset,
             @Param("limit") int limit
     );
+
+    @Select({"select", SELECT_FIELD, "from ", TABLE_NAME, "where id = #{qid}"})
+    public Question selectById(int qid);
+
+    @Update({"update ", TABLE_NAME, "set commentCount = #{commentCount} where id = #{id}"})
+    public int updateCommentCount(@Param("id") int id, @Param("commentCount") int commentCount);
 }

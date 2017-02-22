@@ -33,6 +33,10 @@ public class QuestionService {
         return questionDAO.selectLatestQuestions(userId, offset, limit);
     }
 
+    public Question selectById(int qid) {
+        return questionDAO.selectById(qid);
+    }
+
     public int addQuestion(Question question) {
         question.setTitle(HtmlUtils.htmlEscape(question.getTitle()));
         question.setContent(HtmlUtils.htmlEscape(question.getContent()));
@@ -42,6 +46,8 @@ public class QuestionService {
         return questionDAO.addQuestion(question) > 0 ? question.getId(): 0;
     }
 
-
+    public int updateCommentCount(int id, int commentCount) {
+        return questionDAO.updateCommentCount(id, commentCount);
+    }
 
 }

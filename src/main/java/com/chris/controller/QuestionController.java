@@ -1,22 +1,23 @@
 package com.chris.controller;
 
 import com.chris.dao.QuestionDAO;
-import com.chris.model.HostHolder;
-import com.chris.model.Question;
+import com.chris.model.*;
+import com.chris.service.CommentService;
 import com.chris.service.QuestionService;
+import com.chris.service.UserService;
 import com.chris.util.WendaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by YaoQi on 2017/2/21.
@@ -30,6 +31,12 @@ public class QuestionController {
 
     @Autowired
     private QuestionService questionService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CommentService commentService;
 
     @RequestMapping(value = "/question/add", method = RequestMethod.POST)
     @ResponseBody
@@ -55,6 +62,23 @@ public class QuestionController {
             logger.error("增加问题失败", e.getMessage());
         }
         return WendaUtils.getJSONString(1, "增加问题失败");
+    }
+
+    @RequestMapping(value = "/question/{qid}", method = RequestMethod.GET)
+    public String questionDetail(Model model, @PathVariable("qid") int qid) {
+        Question question = questionService.selectById(qid);
+        model.addAttribute("question", question);
+
+        List<Comment> commentList = commentService.getCommentByEntity(qid, EntityType.ENTITY_QUESTION, 0, 10);
+        List<ViewObject> comments = new ArrayList<>();
+        for (Comment comment : commentList) {
+            ViewObject vo = new ViewObject();
+            vo.set("comment", comment);
+            vo.set("user", userService.getUser(comment.getUserId()));
+            comments.add(vo);
+        }
+        model.addAttribute("comments", comments);
+        return "detail";
     }
 }
 
