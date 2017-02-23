@@ -3,6 +3,7 @@ package com.chris.controller;
 import com.chris.dao.QuestionDAO;
 import com.chris.model.*;
 import com.chris.service.CommentService;
+import com.chris.service.LikeService;
 import com.chris.service.QuestionService;
 import com.chris.service.UserService;
 import com.chris.util.WendaUtils;
@@ -38,6 +39,9 @@ public class QuestionController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private LikeService likeService;
+
     @RequestMapping(value = "/question/add", method = RequestMethod.POST)
     @ResponseBody
     public String addQuestion(@RequestParam("title") String title,
@@ -71,9 +75,22 @@ public class QuestionController {
 
         List<Comment> commentList = commentService.getCommentByEntity(qid, EntityType.ENTITY_QUESTION, 0, 10);
         List<ViewObject> comments = new ArrayList<>();
+
+
         for (Comment comment : commentList) {
             ViewObject vo = new ViewObject();
             vo.set("comment", comment);
+
+            //得到当前用户对这条评论的态度
+            User curUser = hostHolder.getUser();
+            if (curUser == null) {
+                vo.set("liked", 0);
+            } else {
+                vo.set("liked", likeService.getLikeStatus(curUser.getId(), EntityType.ENTITY_COMMENT, comment.getId()));
+            }
+
+            //得到喜欢的总数量
+            vo.set("likeCount", likeService.getLikeCount(EntityType.ENTITY_COMMENT, comment.getId()));
             vo.set("user", userService.getUser(comment.getUserId()));
             comments.add(vo);
         }

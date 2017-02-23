@@ -1,10 +1,13 @@
 package com.chris.interceptor;
 
+import com.chris.controller.LoginController;
 import com.chris.dao.LoginTicketDAO;
 import com.chris.dao.UserDAO;
 import com.chris.model.HostHolder;
 import com.chris.model.LoginTicket;
 import com.chris.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,6 +24,8 @@ import java.util.Date;
  */
 @Component
 public class PassportInterceptor implements HandlerInterceptor {
+    Logger logger = LoggerFactory.getLogger(PassportInterceptor.class);
+
     @Autowired
     private LoginTicketDAO loginTicketDAO;
 
@@ -37,8 +42,10 @@ public class PassportInterceptor implements HandlerInterceptor {
         //判断是否存在要求的cookie名，来自本网站的
         if (httpServletRequest.getCookies() != null) {
             for(Cookie cookie: httpServletRequest.getCookies()) {
+                //logger.info(cookie.toString());
                 if (cookie.getName().equals("ticket")) {
                     ticket = cookie.getValue();
+                   // logger.info(ticket.toString());
                     break;
                 }
             }

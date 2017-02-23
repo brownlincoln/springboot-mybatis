@@ -24,6 +24,9 @@ public class CommentService {
         return commentDAO.selectCommentByEntity(entityId, entityType, offset, limit);
     }
 
+    public Comment getCommentById(int commentId) {
+        return commentDAO.getCommentById(commentId);
+    }
     public int addComment(Comment comment) {
         comment.setContent(HtmlUtils.htmlEscape(comment.getContent()));
         comment.setContent(sensitiveService.filter(comment.getContent()));

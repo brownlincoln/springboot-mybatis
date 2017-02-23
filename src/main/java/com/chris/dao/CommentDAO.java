@@ -30,6 +30,9 @@ public interface CommentDAO {
                                         @Param("offset") int offset,
                                         @Param("limit") int limit);
 
+    @Select({"select ", SELECT_FIELD, "from ", TABLE_NAME, "where id = #{commentId}"})
+    public Comment getCommentById(@Param("commentId") int commentId);
+
     @Select({"select count(id) from ", TABLE_NAME, " where entity_id = #{entityId} and entity_type = #{entityType}" })
     public int getCommentCount(@Param("entityId") int entityId, @Param("entityType") int entityType);
 
