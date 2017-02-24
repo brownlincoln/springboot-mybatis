@@ -1,5 +1,8 @@
 package com.chris.controller;
 
+import com.chris.async.EventModel;
+import com.chris.async.EventProducer;
+import com.chris.async.EventType;
 import com.chris.service.UserService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
@@ -19,10 +22,15 @@ import java.util.Map;
  */
 @Controller
 public class LoginController {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
     @Autowired
     private UserService userService;
 
-    Logger logger = LoggerFactory.getLogger(LoginController.class);
+    @Autowired
+    private EventProducer eventProducer;
+
     @RequestMapping(value = "/reg", method = RequestMethod.POST)
     public String reg(Model model,
                       @RequestParam("username") String username,
@@ -78,6 +86,10 @@ public class LoginController {
                     cookie.setMaxAge(5 * 24 * 2600);
                 }
                 response.addCookie(cookie);
+
+                eventProducer.fireEvent(new EventModel(EventType.LOGIN)
+                    .setExt("username", username).setExt("email", "chrisliu1314@gmail.com")
+                    .setActorId((int)map.get("userId")));
                 //Check the redirect
                 if (StringUtils.isNotBlank(next)) {
                     return "redirect:" + next;

@@ -1,12 +1,16 @@
 package com.chris.controller;
 
 
+import com.chris.async.EventModel;
+import com.chris.async.EventProducer;
+import com.chris.async.EventType;
 import com.chris.model.Comment;
 import com.chris.model.EntityType;
 import com.chris.model.HostHolder;
 import com.chris.model.User;
 import com.chris.service.CommentService;
 import com.chris.service.LikeService;
+import com.chris.service.UserService;
 import com.chris.util.WendaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +37,12 @@ public class LikeController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(path = "/like", method = RequestMethod.POST)
     @ResponseBody
     public String like(@RequestParam("commentId") int commentId, @CookieValue("ticket") String ticket) {
@@ -41,9 +51,16 @@ public class LikeController {
         }*/
         User curUser = hostHolder.getUser();
         if (curUser == null) {
-            return WendaUtils.getJSONString(999, "请登录后操作");
+           // return WendaUtils.getJSONString(999, "请登录后操作");
+            curUser = userService.getUser(WendaUtils.SYSTEM_USERID);
         }
         Comment comment = commentService.getCommentById(commentId);
+
+        //生产事件
+        eventProducer.fireEvent(new EventModel(EventType.LIKE)
+                .setActorId(curUser.getId()).setEntityOwnerId(comment.getUserId())
+                .setEntityType(EntityType.ENTITY_COMMENT).setEntityId(commentId)
+                .setExt("questionId", String.valueOf(comment.getEntityId())));
 
         long likeCount = likeService.like(curUser.getId(), EntityType.ENTITY_COMMENT, commentId);
         return WendaUtils.getJSONString(0, String.valueOf(likeCount));
