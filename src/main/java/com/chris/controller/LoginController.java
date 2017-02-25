@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
@@ -74,6 +75,7 @@ public class LoginController {
                         @RequestParam("password") String password,
                         @RequestParam(value = "next", required = false) String next,
                         @RequestParam(value = "rememberme", defaultValue = "false") boolean rememberme,
+                        HttpServletRequest request,
                         HttpServletResponse response) {
         try {
             Map<String, Object> map = userService.login(username, password);
@@ -87,9 +89,10 @@ public class LoginController {
                 }
                 response.addCookie(cookie);
 
-                eventProducer.fireEvent(new EventModel(EventType.LOGIN)
-                    .setExt("username", username).setExt("email", "chrisliu1314@gmail.com")
-                    .setActorId((int)map.get("userId")));
+//                eventProducer.fireEvent(new EventModel(EventType.LOGIN)
+//                    .setExt("username", username).setExt("email", "chrisliu1314@gmail.com")
+//                    .setActorId((int)map.get("userId")));
+
                 //Check the redirect
                 if (StringUtils.isNotBlank(next)) {
                     return "redirect:" + next;

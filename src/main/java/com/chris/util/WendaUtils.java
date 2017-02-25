@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
+import java.util.Map;
 
 /**
  * Created by YaoQi on 2017/2/19.
@@ -16,8 +17,8 @@ import java.security.MessageDigest;
 public class WendaUtils {
     private static final Logger logger = LoggerFactory.getLogger(WendaUtils.class);
 
-    public static final int ANONYMOUS_USERID = 15;
-    public static final int SYSTEM_USERID = 14;
+    public static final int ANONYMOUS_USERID = 3;
+    public static final int SYSTEM_USERID = 1;
 
     public static String md5(String key) {
         try {
@@ -45,4 +46,13 @@ public class WendaUtils {
         json.put("msg", msg);
         return json.toJSONString();
     }
+    public static String getJSONString(int code, Map<String, Object> map) {
+        JSONObject json = new JSONObject();
+        json.put("code", code);
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            map.put(entry.getKey(), entry.getValue());
+        }
+        return json.toJSONString();
+    }
+
 }
