@@ -55,6 +55,9 @@ public class PassportInterceptor implements HandlerInterceptor {
         if (ticket != null) {
             //如果ticket过期，直接返回
             LoginTicket loginTicket = loginTicketDAO.selectByTicket(ticket);
+            if (loginTicket == null) {
+                return false;
+            }
             Date expired =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(loginTicket.getExpired());
             if (loginTicket == null || expired.before(new Date()) || loginTicket.getStatus() != 0) {
                 return true;

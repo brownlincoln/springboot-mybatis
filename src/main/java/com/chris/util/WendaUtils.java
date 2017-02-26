@@ -17,8 +17,8 @@ import java.util.Map;
 public class WendaUtils {
     private static final Logger logger = LoggerFactory.getLogger(WendaUtils.class);
 
-    public static final int ANONYMOUS_USERID = 3;
-    public static final int SYSTEM_USERID = 1;
+    public static final int ANONYMOUS_USERID = 6;
+    public static final int SYSTEM_USERID = 5;
 
     public static String md5(String key) {
         try {

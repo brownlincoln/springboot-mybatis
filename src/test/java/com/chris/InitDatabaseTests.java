@@ -8,6 +8,7 @@ import com.chris.model.Question;
 import com.chris.model.User;
 import com.chris.service.FollowService;
 import com.chris.util.JedisAdapter;
+import com.chris.util.WendaUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = WendaApplication.class)
@@ -44,9 +46,9 @@ public class InitDatabaseTests {
 
         for(int i = 0; i < 10; i++) {
             User user = new User();
-            user.setName("user" + i);
-            user.setPassword("");
-            user.setSalt("");
+            user.setName("user" + (i + 1));
+            user.setSalt(UUID.randomUUID().toString().substring(0, 5));
+            user.setPassword(WendaUtils.md5("aaa" + user.getSalt()));
             user.setHeadUrl("www.images.nowcoder.com/head/%dt.png" + rand.nextInt(1000));
             userDAO.addUser(user);
 
@@ -56,15 +58,13 @@ public class InitDatabaseTests {
 //            user.setPassword("xxx");
 //            userDAO.updatePassword(user);
 
-            String title = "title" + i;
-            String content = "StringUtils.isBlank() checks that each character of the string is a whitespace " +
-                    "character (or that the string is empty or that it's null). This is totally different than just" +
-                    " checking if the string is empty.";
+            String title = "title" + (i+ 1);
+            String content = "This is the content" + (i + 1);
             Date date = new Date();
             DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             date.setTime(date.getTime() + 1000 * 3600 * 6 * i);
             String sqlDate = formatter.format(date);
-            int userId = rand.nextInt(3) + 1;
+            int userId = rand.nextInt(5) + 1;
             int commentCount = rand.nextInt(30);
             Question question = new Question(title, content, sqlDate, userId, commentCount);
             questionDAO.addQuestion(question);

@@ -1,22 +1,5 @@
 #create table USER
 
-/*
-https://dev.mysql.com/doc/refman/5.7/en/create-table.html
-
-CREATE TABLE IF NOT EXISTS `schema`.`Employee` (
-`idEmployee` VARCHAR(45) NOT NULL ,
-`Name` VARCHAR(255) NULL ,
-`idAddresses` VARCHAR(45) NULL ,
-PRIMARY KEY (`idEmployee`) ,
-CONSTRAINT `fkEmployee_Addresses`
-FOREIGN KEY `fkEmployee_Addresses` (`idAddresses`)
-REFERENCES `schema`.`Addresses` (`idAddresses`)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_bin
- */
 drop table if EXISTS user;
 CREATE TABLE user(
   id int primary key AUTO_INCREMENT,
@@ -82,6 +65,21 @@ CREATE TABLE login_ticket (
   status INT NOT NULL ,
   PRIMARY KEY (id),
   UNIQUE INDEX ticket_UNIQUE (ticket ASC )
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;
+
+
+#feed
+DROP TABLE IF EXISTS feed;
+CREATE TABLE feed (
+  id INT NOT NULL AUTO_INCREMENT,
+  type INT NOT NULL ,
+  user_id INT NOT NULL ,
+  created_date DATETIME NOT NULL ,
+  data VARCHAR(255) NOT NULL ,
+  PRIMARY KEY (id),
+  INDEX user_index (user_id ASC )
 )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8;

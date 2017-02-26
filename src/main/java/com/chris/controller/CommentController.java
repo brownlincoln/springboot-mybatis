@@ -53,7 +53,7 @@ public class CommentController {
             System.out.println(count);
             questionService.updateCommentCount(questionId, count);
         } catch (Exception e) {
-            logger.error("Failed to add comment " + e.getMessage());
+            logger.error("Failed to add comment ", e);
         }
         return "redirect:/question/" + questionId;
     }

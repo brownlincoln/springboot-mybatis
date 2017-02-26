@@ -31,7 +31,7 @@ public class CommentService {
         comment.setContent(HtmlUtils.htmlEscape(comment.getContent()));
         comment.setContent(sensitiveService.filter(comment.getContent()));
         //Can comment.getId() work?
-        return commentDAO.addComment(comment) > 0 ? comment.getId() : 0;
+        return commentDAO.addComment(comment);
     }
 
     public int getCommentCount(int entityId, int entityType) {
