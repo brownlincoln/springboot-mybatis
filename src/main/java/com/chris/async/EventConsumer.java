@@ -60,7 +60,7 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
             public void run() {
                 while (true) {
                     String key = RedisKeyUtil.getEventQueueKey();
-                    //返回结果是什么？
+                    //返回结果是什么？第一个是key，第二个是value
                     List<String> events = jedisAdapter.brpop(0, key);
 
                     //如果得到了key，则继续，找到value进行处理

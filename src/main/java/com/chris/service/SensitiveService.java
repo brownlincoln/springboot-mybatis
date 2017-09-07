@@ -105,7 +105,7 @@ public class SensitiveService implements InitializingBean {
     //判断是否是一个符号
     private boolean isSymbol(char c) {
         int ic = (int)c;
-        return !CharUtils.isAsciiAlphanumeric(c) && (ic < 0x2E80 || ic > 0x9FFF);
+        return !CharUtils.isAsciiAlphanumeric(c) && (ic < 0x2E80 || ic > 0x9FFF); //D东亚文字范围0x2E80-Ox9FFF
     }
 
     public String filter(String text) {
@@ -117,13 +117,14 @@ public class SensitiveService implements InitializingBean {
         int begin = 0;
         int position = 0;
 
-        //to store the filtered text
+        //存储过滤后的文本
         StringBuilder result = new StringBuilder();
         while (position < text.length()) {
             char c = text.charAt(position);
             //Skip white chars
             if (isSymbol(c)) {
                 if (tempNode == rootNode) {
+                    //保留敏感词之间的符号
                     result.append(c);
                     begin++;
                 }
@@ -132,30 +133,30 @@ public class SensitiveService implements InitializingBean {
             }
 
             tempNode = tempNode.getSubNode(c);
-            //the match ends
-            if (tempNode == null) {
+
+            if (tempNode == null) {  //不存在该字符，则均往后移，tempNode回到根结点
                 result.append(text.charAt(begin));
                 begin = begin + 1;
                 position = begin;
                 tempNode = rootNode;
-            } else if (tempNode.isKeywordEnd()) {
+            } else if (tempNode.isKeywordEnd()) { //存在该字符，且该字符为敏感词的结尾词，找到了一个敏感词
                 //find a sensitive word
                 result.append(replacement);
-                begin = position + 1;
+                begin = position + 1; //从position的下一个字符开始匹配
                 position = begin;
                 tempNode = rootNode;
             } else {
-                position++;
+                position++; //存在该字符，position往后移，继续匹配
             }
         }
         result.append(text.substring(begin));
         return result.toString();
     }
     //test filter() method
-/*    public static void main(String[] args) {
+    public static void main(String[] args) {
         SensitiveService s = new SensitiveService();
         s.addWord("色情");
         s.addWord("好色");
-        System.out.println(s.filter("你好*色^^情XX"));
-    }*/
+        System.out.println(s.filter("你***好*色^^情XX"));
+    }
 }

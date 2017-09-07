@@ -80,7 +80,7 @@ public class PassportInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        //After rendering the view, the user info can be cleared
+        //After rendering the view, the user info can be cleared，因为当前线程已经结束，被放回了线程池
         hostHolder.clear();
     }
 }
